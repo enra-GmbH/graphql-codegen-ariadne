@@ -1,4 +1,5 @@
-from typing import TypedDict
+from typing import Optional, TypedDict
 
-class SomethingInput(TypedDict):
-    param: str
+class ProductInput(TypedDict):
+    description: Optional[str]
+    title: Optional[str]

@@ -1,10 +1,9 @@
+// Tests to see if .graphql and .py in this directory files match contents
+
 import fs from 'fs';
 import path from 'path';
 import { convertToPython } from '../src/index';
 
-// test.each([[1, 1]])('test', (input, output) => {
-//   expect(input).toBe(output);
-// })
 const TEST_FILE_DIR = "./tests";
 
 // location of .graphql and .py files
@@ -33,7 +32,7 @@ testFiles().forEach(filePair => {
     const sdl = fs.readFileSync(filePair.graphql, 'utf-8');
     const python = convertToPython(sdl);
     const pythonTarget = fs.readFileSync(filePair.python, 'utf-8');
-    fs.writeFileSync(`${TEST_FILE_DIR}/actual/${path.parse(filePair.python).name}.py`, python)
+    // fs.writeFileSync(`${TEST_FILE_DIR}/actual/${path.parse(filePair.python).name}.py`, python)
     expect(python).toEqual(pythonTarget);
   })
 })
