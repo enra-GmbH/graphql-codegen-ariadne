@@ -1,0 +1,8 @@
+type MyType {
+  value: Int
+  requiredVal: Int!
+  floatValue: Float
+  stringValue: String!
+  booleanValue: Boolean
+  idValue: ID!
+}

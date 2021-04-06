@@ -1,0 +1,3 @@
+union SearchResult = User | Chat | String
+
+union Bla = User | Chat | String

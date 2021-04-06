@@ -1,0 +1,75 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+# Basic types and interfaces
+
+# TODO: error design is still an open API design issue
+type UserError {
+  field: [String!]
+  message: String!
+}
+
+interface Node {
+  id: ID!
+}
+
+# Root objects
+
+type Mutation {
+  login(password: String!, username: String!): Boolean
+
+  # Stands
+  standCreate(stand: StandInput!, translation: StandTranslationInput!): Stand
+  standAddTranslations(id: ID!, translations: [StandTranslationInput!]!): StandAddTranslationPayload!
+}
+
+type Query {
+  authenticated: Boolean
+  hello: String!
+  stand: Stand!
+}
+
+# Stands
+
+enum Lang {
+  DU
+  EN
+}
+
+enum StandType {
+  ANALOG
+  DIGITAL
+  HYBRID
+}
+
+type Stand implements Node {
+  id: ID!
+  slug: String!
+  translation(lang: Lang, translate: Boolean = false): StandTranslation
+  type: StandType!
+}
+
+type StandTranslation implements Node {
+  description: String!
+  id: ID!
+  lang: Lang!
+  title: String!
+}
+
+type StandAddTranslationPayload {
+  standTranslations: [StandTranslation!]!
+  userErrors: [UserError!]!
+}
+
+input StandInput {
+  type: StandType = HYBRID
+#  slug: String  TODO
+}
+
+input StandTranslationInput {
+  description: String
+  lang: Lang!
+  title: String
+}
