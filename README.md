@@ -11,6 +11,7 @@ See the `tests` directory for examples of what it can do currently.
   - [x] Create special `ariadne.ObjectType` with an overloaded `set_field` method for type safe resolver registration.
   - [ ] Allow field access through attributes instead of through string dictionary keys like Ariadne (implement with `typing.protocol` and `@property`, [mypy docs](https://mypy.readthedocs.io/en/stable/protocols.html#recursive-protocols)).
   - [ ] Allow `Callable` for field resolvers.
+  - [ ] Allow type-safe usage of Ariadne's decorator for resolver registration.
 
 ## Usage
 
