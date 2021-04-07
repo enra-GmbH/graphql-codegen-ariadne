@@ -2,7 +2,7 @@ from ariadne.objects import ObjectType
 from graphql import GraphQLResolveInfo
 from typing import Any, Literal, Optional, Protocol, TypedDict, overload
 
-class MyType(TypedDict):
+class MyType(TypedDict, total=False):
     value: Optional[int]
     required_val: int
     float_value: Optional[float]

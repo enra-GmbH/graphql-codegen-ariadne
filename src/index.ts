@@ -3,26 +3,15 @@ import { GraphQLSchema, printSchema, parse, visit, EnumTypeDefinitionNode, Objec
 import { PythonVisitor } from './visitor';
 
 export type MyPluginConfig = {
-  name?: string;
+  useStrForEnums?: boolean;
 };
-
-let imports: Set<string> = new Set();
 
 export function convertToPython(sdl: string): string {
   const astNode = parse(sdl);
-  const visitor = new PythonVisitor()
-
+  const visitor = new PythonVisitor();
   visit(astNode, { leave: visitor });
-  const content = [
-    ...visitor.enums,
-    ...visitor.unions,
-    ...visitor.typedDicts,
-    ...visitor.resolvers
-  ]
-  return [
-    ...visitor.imports,
-    ...content
-  ].join("\n");
+
+  return visitor.output();
 }
 
 export const plugin: PluginFunction<Partial<MyPluginConfig>, string> = (
@@ -30,6 +19,6 @@ export const plugin: PluginFunction<Partial<MyPluginConfig>, string> = (
   documents: Types.DocumentFile[],
   config: MyPluginConfig
 ) => {
-  const printed = printSchema(schema);
-  return convertToPython(printed);
+  const sdl = printSchema(schema);
+  return convertToPython(sdl);
 };

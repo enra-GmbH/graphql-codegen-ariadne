@@ -1,26 +1,26 @@
-// class ImportRegistry {
-//   imports: {[k: string]: Set<string>} = {}
+let importToPackage = {
+  "Union": "typing",
+  "Optional": "typing",
+  "List": "typing",
+};
 
-//   registerImport(pkg: string, thing: string) {
-//     if (!this.imports[pkg])
-//       this.imports[pkg] = new Set();
-//     this.imports[pkg].add(thing);
-//   }
-// }
+export class ImportRegistry {
+  imports: {[k: string]: Set<string>} = {}
 
-// let importToPackage = {
-//   "Union": "typing",
-//   "Optional": "typing"
-// };
+  registerImport(pkg: string, thing: string) {
+    if (!this.imports[pkg])
+      this.imports[pkg] = new Set();
+    this.imports[pkg].add(thing);
+  }
 
-// export function i(thing: keyof typeof importToPackage) {
-
-// }
-
-// i("Union")
-// i("Optional")
-
-
-
-
-// i("hello")
+  // returns a shorthand to register imports, usage:
+  // const i = reg.importFunc();
+  // i("Union")
+  importFunc() {
+    const inner = (thing: keyof typeof importToPackage) => {
+      this.registerImport(importToPackage[thing], thing);
+      return thing;
+    }
+    return inner;
+  }
+}

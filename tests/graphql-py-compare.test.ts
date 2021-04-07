@@ -32,7 +32,7 @@ testFiles().forEach(filePair => {
     const sdl = fs.readFileSync(filePair.graphql, 'utf-8');
     const python = convertToPython(sdl);
     const pythonTarget = fs.readFileSync(filePair.python, 'utf-8');
-    // fs.writeFileSync(`${TEST_FILE_DIR}/actual/${path.parse(filePair.python).name}.py`, python)
+    fs.writeFileSync(`${TEST_FILE_DIR}/actual/${path.parse(filePair.python).name}.py`, python)
     expect(python).toEqual(pythonTarget);
   })
 })

@@ -1,3 +1,4 @@
+from ariadne import EnumType
 from ariadne.objects import ObjectType
 from enum import Enum
 from graphql import GraphQLResolveInfo
@@ -7,27 +8,31 @@ class Role(Enum):
     USER = "USER"
     ADMIN = "ADMIN"
 
+enum_types: List[EnumType] = [
+    EnumType("Role", Role),
+]
+
 SearchResult = Union['User', 'Chat', 'ChatMessage']
 
-class Query(TypedDict):
+class Query(TypedDict, total=False):
     me: 'User'
     user: Optional['User']
     all_users: List[Optional['User']]
     search: List['SearchResult']
     my_chats: List['Chat']
 
-class User(TypedDict):
+class User(TypedDict, total=False):
     id: str
     username: str
     email: str
     role: 'Role'
 
-class Chat(TypedDict):
+class Chat(TypedDict, total=False):
     id: str
     users: List['User']
     messages: List['ChatMessage']
 
-class ChatMessage(TypedDict):
+class ChatMessage(TypedDict, total=False):
     id: str
     content: str
     user: 'User'
