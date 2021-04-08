@@ -6,7 +6,8 @@ import { ImportRegistry } from "./imports";
 
 type PyTypedDict = {
   name: string
-  keys: Array<[string, string]>
+  keys: Array<[string, string]>,
+  total: boolean
 }
 
 type Kwarg =  {
@@ -101,7 +102,8 @@ export class PythonVisitor {
     this._typed_dicts.push({
       name: node.name.value,  // TODO: read case preference from settings
       keys: node.fields.map((field: InputValueDefinitionNode | FieldDefinitionNode): [string, string] =>
-        [snakeCase(field.name.value), toPythonType(field.type, this._import_registry)])
+        [snakeCase(field.name.value), toPythonType(field.type, this._import_registry)]),
+      total: node.kind === "ObjectTypeDefinition"
     })
   }
 
@@ -158,7 +160,6 @@ export class PythonVisitor {
     ]
   }
   
-  _typed_dicts: PyTypedDict[] = []
   public get imports(): string[] {
     const packages = Object.keys(this._import_registry.imports).sort();
     const importStatements = packages.map(pkg => {
@@ -171,11 +172,12 @@ export class PythonVisitor {
     ]
   }
 
+  _typed_dicts: PyTypedDict[] = []
   public get typedDicts(): string[] {
     const importRegistry = this._import_registry
     const toPython = (dict: PyTypedDict) => {
       importRegistry.registerImport("typing", "TypedDict");
-      return `class ${dict.name}(TypedDict, total=False):\n` +
+      return `class ${dict.name}(TypedDict${dict.total ? ", total=False" : ""}):\n` +
         dict.keys.map(([key, type]): string => {
           return `    ${key}: ${type}`
         }).join("\n") + "\n";
