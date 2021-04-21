@@ -1,6 +1,6 @@
 import autoBind from "auto-bind";
 import { snakeCase, upperCaseFirst } from "change-case-all";
-import { FieldDefinitionNode, InputObjectTypeDefinitionNode, InputValueDefinitionNode } from "graphql";
+import { FieldDefinitionNode, InputObjectTypeDefinitionNode, InputValueDefinitionNode, InterfaceTypeDefinitionNode } from "graphql";
 import { EnumTypeDefinitionNode, ListTypeNode, NamedTypeNode, NonNullTypeNode, ObjectTypeDefinitionNode, UnionTypeDefinitionNode } from "graphql";
 import { ImportRegistry } from "./imports";
 
@@ -87,6 +87,10 @@ export class PythonVisitor {
     autoBind(this);
   }
 
+  InterfaceTypeDefinition(node: InterfaceTypeDefinitionNode) {
+    this._addTypedDict(node);
+  }
+
   _enums: Enums = {}
   EnumTypeDefinition(node: EnumTypeDefinitionNode) {
     if (!node.values?.length) {
@@ -95,7 +99,7 @@ export class PythonVisitor {
     this._enums[node.name.value] = node.values.map(val => val.name.value);
   }
 
-  _addTypedDict(node: ObjectTypeDefinitionNode | InputObjectTypeDefinitionNode) {
+  _addTypedDict(node: ObjectTypeDefinitionNode | InputObjectTypeDefinitionNode | InterfaceTypeDefinitionNode) {
     if (!node.fields || !node.fields.length) {
       return
     }

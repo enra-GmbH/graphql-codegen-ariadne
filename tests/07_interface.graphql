@@ -1,0 +1,4 @@
+interface Product {
+  id: ID!
+  description: String!
+}

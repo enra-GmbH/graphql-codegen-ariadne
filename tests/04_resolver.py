@@ -21,6 +21,9 @@ class Query(TypedDict, total=False):
     search: List['SearchResult']
     my_chats: List['Chat']
 
+class Node(TypedDict):
+    id: str
+
 class User(TypedDict, total=False):
     id: str
     username: str

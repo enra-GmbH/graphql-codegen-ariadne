@@ -1,13 +1,12 @@
 {
   "name": "@enra-gmbh/graphql-codegen-ariadne",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "GraphQL Code Generator plugin for generating Python types helpful when implementing GraphQL servers with Ariadne.",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
     "test": "jest",
-    "prepack": "tsc",
-    "semantic-release": "semantic-release"
+    "prepack": "tsc"
   },
   "license": "MIT",
   "dependencies": {
